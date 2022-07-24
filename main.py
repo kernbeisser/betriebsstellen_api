@@ -4,10 +4,6 @@ from flask_restful import Resource, Api
 import pandas as pd
 
 
-app = Flask(__name__)
-api = Api(app)
-
-
 class BetriebsstellenInfo(Resource):
     def get(self, abk):
         betriebsstellen = pd.read_csv('./betriebsstellen_10.2021.csv', sep=';', index_col=False)
@@ -22,8 +18,12 @@ class BetriebsstellenInfo(Resource):
             return {'data' : ''}
 
 
-api.add_resource(BetriebsstellenInfo, '/betriebsstelle/<string:abk>')
+def main():
+    app = Flask(__name__)
+    api = Api(app)
+    api.add_resource(BetriebsstellenInfo, '/betriebsstelle/<string:abk>')
+    app.run(debug=True)
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    main()
